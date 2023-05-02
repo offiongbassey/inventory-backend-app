@@ -11,15 +11,12 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const contactRoute = require("./routes/contactRoute");
 
-const uri = 
-"mongodb+srv://ntplus:08096097539@cluster0.x3ryd.mongodb.net/Pinvent-app?retryWrites=true&w=majority";
-//Middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ["http://localhost:3000", "https://pinvent-app.vercel.app"], 
+    origin: ["http://localhost:3000", "https://pinventory-app.vercel.app/"], 
     credentials: true,
 }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
@@ -38,7 +35,7 @@ app.use(errorHandler);
 
 async function connect() {
     try{
-        await mongoose.connect(uri);
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("Connected to MongoDB");
 
     }catch(error){
@@ -49,4 +46,4 @@ async function connect() {
 connect();
 app.listen(5000, () => {
     console.log("Server started at port 5000");
-});
+})
