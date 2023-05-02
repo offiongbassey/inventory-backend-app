@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors"); 
+const app = express();
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middleWare/errorMiddleware");
@@ -10,41 +11,42 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const contactRoute = require("./routes/contactRoute");
 
-const app = express();
-
-// Middlewares
+const uri = 
+"mongodb+srv://ntplus:08096097539@cluster0.x3ryd.mongodb.net/Pinvent-app?retryWrites=true&w=majority";
+//Middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://pinventory-app.vercel.app"],
+app.use(cors({
+    origin: ["http://localhost:3000", "https://pinventori-app.vercel.app"], 
     credentials: true,
-  })
-);
+}));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Routes Middleware
+//Routes middleware
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
-app.use("/api/contactus", contactRoute);
-
-// Routes
+app.use("/api/contact", contactRoute);
+//Routes
 app.get("/", (req, res) => {
-  res.send("Backend Connected");
-});
+    res.send("Home Page");
 
-// Error Middleware
+});
+//error middleware
 app.use(errorHandler);
-// Connect to DB and start server
-const PORT = process.env.PORT || 5000;
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server Running on port ${PORT}`);
-    });
-  })
-  .catch((err) => console.log(err));
+
+async function connect() {
+    try{
+        await mongoose.connect(uri);
+        console.log("Connected to MongoDB");
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
+connect();
+app.listen(5000, () => {
+    console.log("Server started at port 5000");
+});
