@@ -33,7 +33,7 @@ app.use("/api/contactus", contactRoute);
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Home Page");
+  res.send("Backend Connected");
 });
 
 // Error Middleware
