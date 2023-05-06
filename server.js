@@ -48,3 +48,4 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
+  //trying to re-connect to the database.
