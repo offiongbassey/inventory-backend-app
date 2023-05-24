@@ -42,7 +42,7 @@ const {name, email, password} = req.body
      httpOnly: true,
      expires: new Date(Date.now() + 1000 * 86400), // 1 day
      sameSite: "none",
-     secure: false
+     secure: true
  });
 
  if(user){
@@ -90,7 +90,7 @@ const loginUser = asyncHandler(async (req,res) => {
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 86400), //1 day
         sameSite: "none",
-        secure: false,
+        secure: true,
     });
 
 
